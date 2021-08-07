@@ -84,7 +84,7 @@ const createArticle = async(req, res) => {
     try {
 
         // destructure article data from request body
-        const { title, author, abstract, keywords, volume, article_file_url, article_image } = req.body
+        const { title, author, abstract, keywords, volume, citation, affiliation, startPage, endPage, article_file_url, article_image, publishedDate, updatedDate } = req.body
 
         /**
          * @type {{title:string, 
@@ -92,8 +92,16 @@ const createArticle = async(req, res) => {
          * abstract:string, 
          * keywords:string, 
          * volume:string, 
+         * citation: string,
+         * affiliation: string,
+         * startPage: string,
+         * endPage: string,
          * article_file_url:string, 
-         * article_image:string}}
+         * article_image:string,
+         * publishedDate:string,
+         * updatedDate:string }}
+         * 
+         *
          */
         const articleData = {
             title,
@@ -101,20 +109,17 @@ const createArticle = async(req, res) => {
             abstract,
             keywords,
             volume,
+            citation,
+            affiliation,
+            startPage,
+            endPage,
             article_file_url,
             article_image,
+            publishedDate,
+            updatedDate,
         }
 
-        // // validate articleData
-        // const { error } = await createArticleValidation(articleData)
 
-        // // check if errors
-        // if (error && error.details[0].message) {
-        //     return res.json({
-        //         success: false,
-        //         message: error.details[0].message
-        //     })
-        // }
 
         // generate slug 
         const url_slug = slug(articleData.title)
@@ -320,6 +325,8 @@ const updateSingleArticle = async(req, res) => {
             })
         }
 
+
+
         // add slug to articleData object
         const url_slug = slug(articleData.title)
         articleData['slug'] = url_slug
@@ -329,12 +336,19 @@ const updateSingleArticle = async(req, res) => {
         article['title'] = articleData.title
         article['author'] = articleData.author
         article['keywords'] = articleData.keywords
+        article['citation'] = articleData.citation
+        article['affiliation'] = articleData.affiliation
+        article['startPage'] = articleData.startPage
+        article['endPage'] = articleData.endPage
         article['volume'] = articleData.volume
         article['article_image'] = articleData.article_image
         article['article_file_url'] = articleData.article_file_url
         article['abstract'] = articleData.abstract
         article['status'] = articleData.status
         article['slug'] = articleData.slug
+        article['publishedDate'] = articleData.publishedDate
+        article['updatedDate'] = articleData.updatedDate
+
 
         await article.save()
 
@@ -371,7 +385,7 @@ const searchFetchArticles = async(req, res) => {
         // init options 
         const options = {
             page: _page,
-            paginate: 1,
+            paginate: 25,
             order: [
                 ['id']
             ],
@@ -392,8 +406,14 @@ const searchFetchArticles = async(req, res) => {
             })
         } else {
             // get data
-            const articles = await Article.findAll({ where: { status: "published", title: {
-                        [Op.like]: `%${search.toUpperCase()}%` } } })
+            const articles = await Article.findAll({
+                where: {
+                    status: "published",
+                    title: {
+                        [Op.like]: `%${search.toUpperCase()}%`
+                    }
+                }
+            })
 
             return res.json({
                 success: true,

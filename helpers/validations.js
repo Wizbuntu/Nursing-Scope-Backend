@@ -50,7 +50,11 @@ const Login = async(loginData) => {
 }
 
 
-
+/**
+ * 
+ * @param {Object} articleData 
+ * @returns {Promise<any>}
+ */
 const createArticle = async(articleData) => {
     try {
 
@@ -61,6 +65,7 @@ const createArticle = async(articleData) => {
             abstract: Joi.string().required(),
             keywords: Joi.string().optional(),
             volume: Joi.string().optional(),
+            citation: Joi.string().optional(),
             article_file_url: Joi.string().required(),
             article_image: Joi.string().optional()
         })
@@ -75,12 +80,37 @@ const createArticle = async(articleData) => {
 }
 
 
+/**
+ * 
+ * @param {Object} volumeData 
+ * @returns {Promise<any>}
+ */
+const createVolume = async(volumeData) => {
+    try {
+
+        // init schema 
+        const schema = Joi.object({
+            volume: Joi.string().required(),
+            issue: Joi.string().required(),
+            date: Joi.string().required(),
+        })
+
+
+        // return schema validation
+        return schema.validate(volumeData)
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 
 // init validations
 const validations = {
     createAccount,
     Login,
-    createArticle
+    createArticle,
+    createVolume
 }
 
 //export validations 

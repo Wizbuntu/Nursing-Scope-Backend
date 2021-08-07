@@ -33,7 +33,20 @@ const Article = sequelize.define('Article', {
         type: DataTypes.STRING
     },
     volume: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    citation: {
+        type: DataTypes.TEXT
+    },
+    startPage: {
+        type: DataTypes.TEXT
+    },
+    endPage: {
+        type: DataTypes.TEXT
+    },
+    affiliation: {
+        type: DataTypes.TEXT
     },
     status: {
         type: DataTypes.STRING,
@@ -48,6 +61,12 @@ const Article = sequelize.define('Article', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    publishedDate: {
+        type: DataTypes.STRING,
+    },
+    updatedDate: {
+        type: DataTypes.STRING,
+    }
 
 
 

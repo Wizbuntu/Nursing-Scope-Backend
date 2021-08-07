@@ -24,7 +24,6 @@ const verify = async(req, res, next) => {
          */
         const token = req.headers.authorization
 
-        console.log(token)
 
         // check if no token
         if (!token) {

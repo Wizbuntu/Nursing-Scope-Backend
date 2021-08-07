@@ -7,6 +7,9 @@ const morgan = require('morgan')
 // require cors
 const cors = require('cors')
 
+// require path
+const path = require('path')
+
 // require express file upload 
 const expressFileUpload = require('express-fileupload')
 
@@ -15,6 +18,9 @@ const userAuth = require('./routes/user-auth')
 
 // require Article route
 const articleRoute = require('./routes/article')
+
+// require Volume Route
+const volumeRoute = require('./routes/volume')
 
 
 // init app 
@@ -41,9 +47,17 @@ app.use(expressFileUpload())
 app.use(express.static('public'))
 
 
+// app.use(express.static(path.join(__dirname, 'client/build')));
+// app.get('*', function(req, res) {
+//     res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+// });
+
+
 // ==================
 app.use('/v1/api', userAuth)
 app.use('/v1/api', articleRoute)
+app.use('/v1/api', volumeRoute)
+
 
 
 // export app 
